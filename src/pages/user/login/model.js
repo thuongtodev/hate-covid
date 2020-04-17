@@ -13,13 +13,13 @@ const Model = {
     *login({ payload }, { call, put }) {
       const response = yield call(postLogin, payload);
       const { status, data } = response;
-      debugger;
       if (!status.error) {
         yield put({
           type: 'changeLoginStatus',
           payload: { ...response, currentAuthority: 'admin' },
         }); // Login successfully
         message.success('Login success');
+        localStorage.setItem('accessToken', response.data.accessToken);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
@@ -41,7 +41,6 @@ const Model = {
 
         history.replace(redirect || '/');
       } else {
-        debugger;
         message.success('Login fail');
         yield put({
           type: 'changeLoginStatus',
