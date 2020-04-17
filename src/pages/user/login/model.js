@@ -1,6 +1,6 @@
 import { history } from 'umi';
 import { message } from 'antd';
-import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import { getFakeCaptcha, postLogin } from './service';
 import { getPageQuery, setAuthority } from './utils/utils';
 
@@ -13,7 +13,7 @@ const Model = {
     *login({ payload }, { call, put }) {
       const response = yield call(postLogin, payload);
       const { status, data } = response;
-      if (!status.error) {
+      if (!_isEmpty(data)) {
         yield put({
           type: 'changeLoginStatus',
           payload: { ...response, currentAuthority: 'admin' },
@@ -41,7 +41,7 @@ const Model = {
 
         history.replace(redirect || '/');
       } else {
-        message.success('Login fail');
+        message.error('Login fail');
         yield put({
           type: 'changeLoginStatus',
           payload: { ...response, currentAuthority: '' },

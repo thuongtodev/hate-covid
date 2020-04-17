@@ -29,20 +29,6 @@ const codeMessage = {
 const errorHandler = (error) => {
   const { response } = error;
 
-  if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
-    notification.error({
-      message: `Request error ${status}: ${url}`,
-      description: errorText,
-    });
-  } else if (!response) {
-    notification.error({
-      description: 'Your network is abnormal and cannot connect to the server',
-      message: 'Network anomaly',
-    });
-  }
-
   return response;
 };
 
