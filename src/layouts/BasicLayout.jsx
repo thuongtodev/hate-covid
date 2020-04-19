@@ -29,39 +29,13 @@ const noMatch = (
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = menuList =>
-  menuList.map(item => {
+const menuDataRender = (menuList) =>
+  menuList.map((item) => {
     const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
     return Authorized.check(item.authority, localItem, null);
   });
 
-const defaultFooterDom = (
-  <DefaultFooter
-    copyright="2019 蚂蚁金服体验技术部出品"
-    links={[
-      {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
-        blankTarget: true,
-      },
-      {
-        key: 'github',
-        title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
-        blankTarget: true,
-      },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
-    ]}
-  />
-);
-
-const BasicLayout = props => {
+const BasicLayout = (props) => {
   const {
     dispatch,
     children,
@@ -79,13 +53,19 @@ const BasicLayout = props => {
       dispatch({
         type: 'user/fetchCurrent',
       });
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        dispatch({
+          type: 'login/logout',
+        });
+      }
     }
   }, []);
   /**
    * init variables
    */
 
-  const handleMenuCollapse = payload => {
+  const handleMenuCollapse = (payload) => {
     if (dispatch) {
       dispatch({
         type: 'global/changeLayoutCollapsed',
@@ -134,7 +114,7 @@ const BasicLayout = props => {
             <span>{route.breadcrumbName}</span>
           );
         }}
-        footerRender={() => defaultFooterDom}
+        footerRender={null}
         menuDataRender={menuDataRender}
         rightContentRender={() => <RightContent />}
         {...props}
@@ -146,7 +126,7 @@ const BasicLayout = props => {
       </ProLayout>
       <SettingDrawer
         settings={settings}
-        onSettingChange={config =>
+        onSettingChange={(config) =>
           dispatch({
             type: 'settings/changeSetting',
             payload: config,

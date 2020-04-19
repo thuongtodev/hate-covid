@@ -21,7 +21,7 @@ export default defineConfig({
   },
   locale: {
     // default zh-CN
-    default: 'zh-CN',
+    default: 'en-EN',
     // default true, when it is true, will use `navigator.language` overwrite default
     antd: true,
     baseNavigator: true,
@@ -330,8 +330,8 @@ export default defineConfig({
           const antdProPath = match[1].replace('.less', '');
           const arr = winPath(antdProPath)
             .split('/')
-            .map(a => a.replace(/([A-Z])/g, '-$1'))
-            .map(a => a.toLowerCase());
+            .map((a) => a.replace(/([A-Z])/g, '-$1'))
+            .map((a) => a.toLowerCase());
           return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
         }
 
