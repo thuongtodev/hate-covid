@@ -1,20 +1,10 @@
-import request from '@/utils/request';
 import { API_ENPOINT } from '@/utils/utils';
+import axios from 'axios';
 
 export async function postLogin(params) {
-  return request(`${API_ENPOINT}/users/login`, {
+  return axios({
     method: 'POST',
+    url: `${API_ENPOINT}/users/login`,
     data: params,
   });
-}
-
-export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
-    method: 'POST',
-    data: params,
-  });
-}
-
-export async function getFakeCaptcha(mobile) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
 }

@@ -1,7 +1,6 @@
 import { history } from 'umi';
 import { message } from 'antd';
-import _isEmpty from 'lodash/isEmpty';
-import { getFakeCaptcha, postLogin } from './service';
+import { postLogin } from './service';
 import { getPageQuery, setAuthority } from './utils/utils';
 
 const Model = {
@@ -12,14 +11,15 @@ const Model = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(postLogin, payload);
-      const { status, data } = response;
-      if (!_isEmpty(data)) {
+
+      const { status, data } = response.data;
+      if (!status.error) {
         yield put({
           type: 'changeLoginStatus',
           payload: { ...response, currentAuthority: 'admin' },
         }); // Login successfully
         message.success('Login success');
-        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('accessToken', data.accessToken);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
@@ -47,10 +47,6 @@ const Model = {
           payload: { ...response, currentAuthority: '' },
         }); // Login successfully
       }
-    },
-
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
     },
   },
   reducers: {
