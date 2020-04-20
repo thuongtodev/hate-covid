@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Table, Row, Col } from 'antd';
 import React, { useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -18,6 +19,12 @@ const TableList = (props) => {
       type: 'ggdrive/getLink',
     });
   }, []);
+  const handleDeleteAccount = (id) => {
+    dispatch({
+      type: 'ggdrive/deleteLink',
+      payload: { id },
+    });
+  };
   const columns = [
     {
       title: '#',
@@ -44,9 +51,9 @@ const TableList = (props) => {
       title: 'Action',
       dataIndex: 'option',
       valueType: 'option',
-      render: () => (
+      render: (_, record) => (
         <>
-          <a onClick={() => {}}>Delete</a>
+          <a onClick={() => handleDeleteAccount(record._id)}>Delete</a>
         </>
       ),
     },
@@ -66,7 +73,7 @@ const TableList = (props) => {
           </a>
         </Col>
       </Row>
-      <Table dataSource={data} columns={columns} />
+      <Table dataSource={data} columns={columns} rowKey="_id" />
     </PageHeaderWrapper>
   );
 };

@@ -15,3 +15,10 @@ export async function queryLink() {
     url: `${API_ENPOINT}/users/link_google_drive`,
   });
 }
+export async function deteleAccountLink(params) {
+  return axios({
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+    url: `${API_ENPOINT}/google_accounts/remove/${params.id}`,
+  });
+}

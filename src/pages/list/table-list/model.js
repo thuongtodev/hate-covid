@@ -1,4 +1,5 @@
-import { queryData, queryLink } from './service';
+import { queryData, queryLink, deteleAccountLink } from './service';
+import { message } from 'antd';
 
 const Model = {
   namespace: 'ggdrive',
@@ -17,6 +18,9 @@ const Model = {
           payload: { data },
         });
       }
+      if (response.status === 401) {
+        yield put({ type: 'login/logout' });
+      }
     },
     *getLink(_, { call, put }) {
       const response = yield call(queryLink);
@@ -26,6 +30,22 @@ const Model = {
           type: 'saveLink',
           payload: { ...data },
         });
+      }
+      if (response.status === 401) {
+        yield put({ type: 'login/logout' });
+      }
+    },
+    *deleteLink({ payload }, { call, put }) {
+      const response = yield call(deteleAccountLink, payload);
+      const { status } = response.data;
+      if (!status.error) {
+        yield put({ type: 'ggdrive/getData' });
+        message.success('Delete Success!');
+      } else {
+        message.error('Delete Error');
+      }
+      if (response.status === 401) {
+        yield put({ type: 'login/logout' });
       }
     },
   },
