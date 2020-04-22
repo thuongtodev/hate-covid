@@ -111,6 +111,12 @@ export default defineConfig({
                   path: '/google-drive/main',
                   component: './list/table-list',
                 },
+                {
+                  name: 'file',
+                  icon: 'smile',
+                  path: '/google-drive/file',
+                  component: './list/file',
+                },
                 // {
                 //   name: 'analysis',
                 //   icon: 'smile',
